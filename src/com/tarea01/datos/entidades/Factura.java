@@ -12,6 +12,7 @@ public class Factura {
 	private double igv;
 	private double montoTotal;
 	private List<DetalleFactura> listaDetalleFactura;
+	public static final double IGV = 0.18;
 
 	public int getId() {
 		return id;

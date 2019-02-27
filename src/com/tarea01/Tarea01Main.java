@@ -137,6 +137,8 @@ public class Tarea01Main {
 					+ cliente1.getNroFacturas());
 		}
 		
+		System.out.println(Factura.IGV);
+		
 		
 		
 		
