@@ -5,9 +5,11 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.tarea01.datos.dao.FacturaDao;
+import com.tarea01.datos.entidades.Cliente;
 import com.tarea01.datos.entidades.Factura;
 import com.tarea01.datos.util.Conexion;
 
@@ -64,8 +66,53 @@ public class FacturaDaoImpl implements FacturaDao {
 
 	@Override
 	public List<Factura> listarFacturas() {
-		// TODO Auto-generated method stub
-		return null;
+		Conexion conexion = new Conexion();
+		Connection conn = conexion.getConnection();
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = "Select id, nroFactura, fechaFactura, igv, montoTotal, idCliente "
+				+ "from Factura";
+		List<Factura> listaFacturas = new ArrayList<>();
+		
+		try{
+			
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()){
+				Factura factura = new Factura();
+				factura.setId(rs.getInt(1));
+				factura.setNroFactura(rs.getString(2));
+				factura.setFechaFactura(new java.util.Date(rs.getDate(3).getTime()));
+				factura.setIgv(rs.getDouble(4));
+				factura.setMontoTotal(rs.getDouble(5));
+				Cliente cliente = new Cliente();
+				cliente.setId(rs.getInt(6));
+				factura.setCliente(cliente);
+				listaFacturas.add(factura);
+			}
+			
+		}catch(SQLException ex){
+			
+		}finally{
+			
+			try{
+			if(pstmt != null)
+				pstmt.close();
+			
+			if(rs != null)
+				rs.close();
+			
+			if(conn != null)
+				conn.close();
+			
+			}catch(SQLException ex){
+				
+			}
+		}
+		
+		
+		return listaFacturas;
 	}
 
 	@Override
